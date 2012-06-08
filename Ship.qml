@@ -8,6 +8,7 @@ Rectangle {
     radius: 10
     width: 2*radius
     height: 2*radius
+    opacity: 0
 
     property color playercolor: "green"
     property string playername;
@@ -18,6 +19,7 @@ Rectangle {
     property variant velocity: [0.0, 0.0]
     property variant acceleration: [0.0, 0.0]
     property variant keys: []
+    property double particleEmissionCounter: 0;
     
     property double health: 100
     
@@ -57,19 +59,43 @@ Rectangle {
 //         console.log("accel:", acceleration)
 //     }
     
-    onPositionChanged: {
-        x = position[0];
-        y = position[1];
-        
+    function spawnParticle(opacity) {
         var comp = Qt.createComponent("Particle.qml");
         var sprite = comp.createObject(arena, {
-            "x": x + radius,
-            "y": y + radius
+            "x": x + radius/2 + Math.random() * 8 + 1,
+            "y": y + radius/2 + Math.random() * 8 - 5,
+            "opacity": opacity
         });
 
         if (sprite == null) {
             // Error Handling
             console.log("Error creating object");
+        }
+    }
+    
+    // basic periodic particle spawner
+    Timer {
+        interval: 300
+        running: true
+        repeat: true
+        onTriggered: {
+            spawnParticle(0.5);
+        }
+    }
+    
+    onPositionChanged: {
+        particleEmissionCounter -= Math.abs(x-position[0])
+        particleEmissionCounter -= Math.abs(y-position[1])
+        x = position[0];
+        y = position[1];
+        if ( particleEmissionCounter < 0 ) {
+            spawnParticle(Math.max(0.5, 
+                                   Math.min(1.0, 
+                                            (Math.abs(velocity[0])+Math.abs(velocity[1]))*2
+                                           )
+                                  )
+                         );
+            particleEmissionCounter = 8;
         }
     }
 }
