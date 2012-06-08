@@ -26,6 +26,7 @@ Rectangle {
                 position: [50, 50]
                 playercolor: "red"
                 keys: [Qt.Key_Left, Qt.Key_Right, Qt.Key_Down, Qt.Key_Up]
+                playername: "Player 1"
             }
             
             Ship {
@@ -35,6 +36,7 @@ Rectangle {
                 position: [450, 450]
                 playercolor: "blue"
                 keys: [Qt.Key_A, Qt.Key_D, Qt.Key_S, Qt.Key_W]
+                playername: "Player 2"
             }
         }
         
@@ -69,6 +71,26 @@ Rectangle {
             doHandleKey(event, "released")
         }
         
+        Text {
+            id: messagebox
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.horizontalCenter: parent.horizontalCenter
+            opacity:0
+            Behavior on opacity {
+                NumberAnimation {
+                    duration:300
+                }
+            }
+            font.pointSize:35
+            color:"white"
+            text:"FOOBAR!"
+        }
+        
+        function message(text, timeout) {
+            messagebox.text = text;
+            messagebox.opacity = 1;
+        }
+        
         function ouch(ship, damage) {
             console.log("damage: ", damage, ship);
             if ( damage < 4 ) {
@@ -77,14 +99,14 @@ Rectangle {
             ship.health -= damage;
             if ( ship.health <= 0 ) {
                ship.health = 0;
-               console.log("game ends, player died")
+               message(ship.playername + " died. Fail!", 5000);
             }
             ship.healthbar().health = ship.health;
         }
         
         function applyDamageFromWallCollision(ship) {
             console.log(ship.velocity);
-            var damage = Math.sqrt(Math.pow(ship.velocity[0], 2) + Math.pow(ship.velocity[1], 2)) * 10;
+            var damage = ( Math.pow(ship.velocity[0], 2) + Math.pow(ship.velocity[1], 2) ) * 20;
             ouch(ship, damage);
         }
         

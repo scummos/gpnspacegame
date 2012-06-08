@@ -9,6 +9,7 @@ Rectangle {
     height: 2*radius
 
     property color playercolor: "green"
+    property string playername;
     
     property HealthBar healthbar;
     
