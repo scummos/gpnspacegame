@@ -73,9 +73,21 @@ Rectangle {
         function eventuallyHandleArenaCollision(ship) {
             if ( ship.x + ship.radius*2 > width || ship.x < 0 ) {
                 reflect(ship, 0);
+                var pos = ship.position;
+                if(ship.x < 0)
+                    pos[0] = 0;
+                else
+                    pos[0] = width - ship.radius*2;
+                ship.position = pos;
             }
             if ( ship.y + ship.radius*2 > height || ship.y < 0 ) {
                 reflect(ship, 1);
+                var pos = ship.position;
+                if(ship.y < 0)
+                    pos[1] = 0;
+                else
+                    pos[1] = height - ship.radius*2;
+                ship.position = pos;
             }
         }
         
