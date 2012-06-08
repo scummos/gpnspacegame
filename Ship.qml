@@ -16,7 +16,7 @@ Rectangle {
     
     property int radius: 10
     
-    property double shipAccel: 0.002
+    property double shipAccel: 0.001
     
     function tick() {
         // calculate norm of acceleration

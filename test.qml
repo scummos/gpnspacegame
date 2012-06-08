@@ -95,13 +95,23 @@ Rectangle {
             // ship coordinates specify the upper left corner
             var distance = Math.sqrt(Math.pow(ship.position[0]-other.position[0], 2)
                                     +Math.pow(ship.position[1]-other.position[1], 2));
-            if ( distance < ship.radius + other.radius ) {
-                console.log("BOOM!");
+            // TODO: remove sqrt(2) scale with spheres
+            var effective_radius = (ship.radius + other.radius)*Math.sqrt(2);
+            if ( distance < effective_radius ) {
                 // simple collision with equal masses: swap velocities
                 var v1 = ship.velocity;
                 var v2 = other.velocity;
                 ship.velocity = v2;
                 other.velocity = v1;
+                // avoid penetration: move players apart
+                var p1 = ship.position;
+                var p2 = other.position;
+                // half the penetration depth scaled by the distance
+                // penetration_vec has half pen. depth as magnitude, then
+                var penetration_norm = (effective_radius-distance)/2.0 * distance;
+                var penetration_vec = [(p1[0]-p2[0])/penetration_norm, (p1[1]-p2[1])/penetration_norm];
+                ship.position = [p1[0] + penetration_vec[0], p1[1] + penetration_vec[1]];
+                other.position = [p2[0] - penetration_vec[0], p2[1] - penetration_vec[1]];
             }
         }
         
