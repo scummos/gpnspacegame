@@ -4,7 +4,7 @@ Grid {
     rows: 1; columns: 2; spacing: 20
     
     property string text : "<none>"
-    property int health: 100;
+    property int health: -1;
     property color barcolor: "black"
     onHealthChanged: {
         children[1].children[0].width = health;

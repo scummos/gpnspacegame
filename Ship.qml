@@ -10,10 +10,14 @@ Rectangle {
 
     property color playercolor: "green"
     
+    property HealthBar healthbar;
+    
     property variant position: [0.0, 0.0]
     property variant velocity: [0.0, 0.0]
     property variant acceleration: [0.0, 0.0]
     property variant keys: []
+    
+    property double health: 100
     
     property double shipAccel: 0.001
     

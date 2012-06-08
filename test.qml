@@ -15,17 +15,23 @@ Rectangle {
         y: 25
         color: "#000000"
         
-        property int timeInterval: 16
+        property int timeInterval: 4
         
         Item {
             id: players
             Ship {
+                function healthbar() {
+                    return healthbars.children[0];
+                }
                 position: [50, 50]
                 playercolor: "red"
                 keys: [Qt.Key_Left, Qt.Key_Right, Qt.Key_Down, Qt.Key_Up]
             }
             
             Ship {
+                function healthbar() {
+                    return healthbars.children[1];
+                }
                 position: [450, 450]
                 playercolor: "blue"
                 keys: [Qt.Key_A, Qt.Key_D, Qt.Key_S, Qt.Key_W]
@@ -63,7 +69,27 @@ Rectangle {
             doHandleKey(event, "released")
         }
         
+        function ouch(ship, damage) {
+            console.log("damage: ", damage, ship);
+            if ( damage < 4 ) {
+                damage = 0;
+            }
+            ship.health -= damage;
+            if ( ship.health <= 0 ) {
+               ship.health = 0;
+               console.log("game ends, player died")
+            }
+            ship.healthbar().health = ship.health;
+        }
+        
+        function applyDamageFromWallCollision(ship) {
+            console.log(ship.velocity);
+            var damage = Math.sqrt(Math.pow(ship.velocity[0], 2) + Math.pow(ship.velocity[1], 2)) * 10;
+            ouch(ship, damage);
+        }
+        
         function reflect(ship, axis) {
+            applyDamageFromWallCollision(ship);
             var reflectedVelocity = ship.velocity;
             reflectedVelocity[axis] = -reflectedVelocity[axis] * 0.75;
             reflectedVelocity[1-axis] = reflectedVelocity[1-axis] * 0.75;
@@ -128,18 +154,19 @@ Rectangle {
     }
     
     Grid {
+        id: healthbars
         x: 25
         columns: 2; rows: 1; spacing: 40;
         HealthBar {
             text: "Player 1"
             barcolor: players.children[0].playercolor
-            health: 70
+            health: 100.0
         }
         
         HealthBar {
             text: "Player 2"
             barcolor: players.children[1].playercolor
-            health: 20
+            health: 100.0
         }
     }
     
