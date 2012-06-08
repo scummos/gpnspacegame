@@ -4,9 +4,9 @@ import Qt 4.7
 Rectangle {
     id: ship
     color: playercolor
-    width: 20
-    height: 20
     radius: 10
+    width: 2*radius
+    height: 2*radius
 
     property color playercolor: "green"
     
