@@ -153,27 +153,17 @@ Rectangle {
                 var collision_normal = [(p1[0]-p2[0])/distance, (p1[1]-p2[1])/distance];
                 // simple circle-collision with equal masses:
                 // swap velocities in normal direction and reflect in tangent direction
-                var v1_abs = ship.velocity[0]*collision_normal[0] + ship.velocity[1]*collision_normal[1];
-                var v2_abs = other.velocity[0]*collision_normal[0] + other.velocity[1]*collision_normal[1];
-                var v1_n = [v1_abs*collision_normal[0], v1_abs*collision_normal[1]];
-                var v2_n = [v2_abs*collision_normal[0], v2_abs*collision_normal[1]];
-                var v1_t = [-v1_abs*collision_normal[1], v1_abs*collision_normal[0]];
-                var v2_t = [-v2_abs*collision_normal[1], v2_abs*collision_normal[0]];
+                var v1_n = [(ship.velocity[0]*collision_normal[0] + ship.velocity[1]*collision_normal[1])*collision_normal[0],
+                            (ship.velocity[0]*collision_normal[0] + ship.velocity[1]*collision_normal[1])*collision_normal[1]];
+                var v2_n = [(other.velocity[0]*collision_normal[0] + other.velocity[1]*collision_normal[1])*collision_normal[0], 
+                            (other.velocity[0]*collision_normal[0] + other.velocity[1]*collision_normal[1])*collision_normal[1]];
+                var v1_t = [-(-ship.velocity[0]*collision_normal[1] + ship.velocity[1]*collision_normal[0])*collision_normal[1], 
+                            (-ship.velocity[0]*collision_normal[1] + ship.velocity[1]*collision_normal[0])*collision_normal[0]];
+                var v2_t = [-(-other.velocity[0]*collision_normal[1] + other.velocity[1]*collision_normal[0])*collision_normal[1], 
+                            (-other.velocity[0]*collision_normal[1] + other.velocity[1]*collision_normal[0])*collision_normal[0]];
                 console.log("COLLISION!");
-//                 console.log(v1_abs);
-//                 console.log(v1_n);
-//                 console.log(v1_t);
-//                 console.log(v2_abs);
-//                 console.log(v2_n);
-//                 console.log(v2_t);
                 ship.velocity =  [v2_n[0] - v1_t[1], v2_n[1] + v1_t[0]];
                 other.velocity = [v1_n[0] - v2_t[1], v1_n[1] + v2_t[0]];
-//                 ship.velocity =  [v2_n[0], v2_n[1]];
-//                 other.velocity = [v1_n[0], v1_n[1]];
-//                 ship.velocity =  [-v1_t[1], v1_t[0]];
-//                 other.velocity = [-v2_t[1], v2_t[0]];
-//                 console.log(ship.velocity);
-//                 console.log(other.velocity);
                 // avoid penetration: move players apart
                 // half the penetration depth with some "offset factor"
                 // penetration_vec has half pen. depth as magnitude, then
