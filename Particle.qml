@@ -26,7 +26,7 @@ Item {
             running: true
             NumberAnimation { target: particle; property: "width"; to: 10; duration: 800 }
             NumberAnimation { target: particle; property: "height"; to: 10; duration: 800 }
-            NumberAnimation { target: particle; property: "radius"; to: 0; duration: 1400 }
+            NumberAnimation { target: particle; property: "radius"; to: 0; duration: 1100 }
         }
         
         Timer {
