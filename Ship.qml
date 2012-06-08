@@ -5,7 +5,7 @@ import Qt.labs.particles 1.0
 Rectangle {
     id: ship
     color: playercolor
-    radius: 10
+    radius: 15
     width: 2*radius
     height: 2*radius
     opacity: 0
