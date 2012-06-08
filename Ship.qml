@@ -90,8 +90,8 @@ Rectangle {
         y = position[1];
         if ( particleEmissionCounter < 0 ) {
             spawnParticle(Math.max(0.5, 
-                                   Math.min(1.0, 
-                                            (Math.abs(velocity[0])+Math.abs(velocity[1]))*2
+                                   Math.min(0.7, 
+                                            (Math.abs(velocity[0])+Math.abs(velocity[1]))*1.3
                                            )
                                   )
                          );
