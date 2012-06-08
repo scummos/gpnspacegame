@@ -17,13 +17,11 @@ Grid {
     Text {
         text: parent.text
         font.family: "Monospace"
-        font.pointSize: 11
-        color: "black"
+        font.pointSize: 8
+        color: "#CCCCCC"
     }
     
     Rectangle {
-        anchors.verticalCenter: parent.verticalCenter
-        
         border.width: 1
         width: 100
         height: 12

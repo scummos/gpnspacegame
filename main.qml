@@ -5,7 +5,7 @@ Rectangle {
     id: canvas
     width: 600
     height: 600
-    color: "#FFBC00"
+    color: "#333333"
     
     Rectangle {
         id: arena
@@ -15,7 +15,7 @@ Rectangle {
         y: 25
         color: "#000000"
         
-        property int timeInterval: 4
+        property int timeInterval: 16
         
         Item {
             id: players
@@ -211,6 +211,7 @@ Rectangle {
     }
     
     Grid {
+        y: 5
         id: healthbars
         x: 25
         columns: 2; rows: 1; spacing: 40;

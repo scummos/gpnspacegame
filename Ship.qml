@@ -95,7 +95,7 @@ Rectangle {
                                            )
                                   )
                          );
-            particleEmissionCounter = 8;
+            particleEmissionCounter = 6;
         }
     }
 }
