@@ -145,20 +145,42 @@ Rectangle {
                                     +Math.pow(ship.position[1]-other.position[1], 2));
             var effective_radius = (ship.radius + other.radius);
             if ( distance < effective_radius ) {
-                // simple collision with equal masses: swap velocities
-                var v1 = ship.velocity;
-                var v2 = other.velocity;
-                ship.velocity = v2;
-                other.velocity = v1;
+                // make sure we are not f*cked by the "center" being in top-left corner
+                var offset = ship.radius*Math.sqrt(2);
+                var other_offset = other.radius*Math.sqrt(2);
+                var p1 = [ship.position[0]+offset, ship.position[1]+offset];
+                var p2 = [other.position[0]+other_offset, other.position[1]+other_offset];
+                var collision_normal = [(p1[0]-p2[0])/distance, (p1[1]-p2[1])/distance];
+                // simple circle-collision with equal masses:
+                // swap velocities in normal direction and reflect in tangent direction
+                var v1_abs = ship.velocity[0]*collision_normal[0] + ship.velocity[1]*collision_normal[1];
+                var v2_abs = other.velocity[0]*collision_normal[0] + other.velocity[1]*collision_normal[1];
+                var v1_n = [v1_abs*collision_normal[0], v1_abs*collision_normal[1]];
+                var v2_n = [v2_abs*collision_normal[0], v2_abs*collision_normal[1]];
+                var v1_t = [-v1_abs*collision_normal[1], v1_abs*collision_normal[0]];
+                var v2_t = [-v2_abs*collision_normal[1], v2_abs*collision_normal[0]];
+                console.log("COLLISION!");
+//                 console.log(v1_abs);
+//                 console.log(v1_n);
+//                 console.log(v1_t);
+//                 console.log(v2_abs);
+//                 console.log(v2_n);
+//                 console.log(v2_t);
+                ship.velocity =  [v2_n[0] - v1_t[1], v2_n[1] + v1_t[0]];
+                other.velocity = [v1_n[0] - v2_t[1], v1_n[1] + v2_t[0]];
+//                 ship.velocity =  [v2_n[0], v2_n[1]];
+//                 other.velocity = [v1_n[0], v1_n[1]];
+//                 ship.velocity =  [-v1_t[1], v1_t[0]];
+//                 other.velocity = [-v2_t[1], v2_t[0]];
+//                 console.log(ship.velocity);
+//                 console.log(other.velocity);
                 // avoid penetration: move players apart
-                var p1 = ship.position;
-                var p2 = other.position;
-                // half the penetration depth scaled by the distance
+                // half the penetration depth with some "offset factor"
                 // penetration_vec has half pen. depth as magnitude, then
-                var penetration_norm = (effective_radius - distance) * distance * 10;
-                var penetration_vec = [(p1[0]-p2[0])/penetration_norm, (p1[1]-p2[1])/penetration_norm];
-                ship.position = [p1[0] + penetration_vec[0], p1[1] + penetration_vec[1]];
-                other.position = [p2[0] - penetration_vec[0], p2[1] - penetration_vec[1]];
+                var penetration_norm = (effective_radius - distance)*2;
+                var penetration_vec = [collision_normal[0]*penetration_norm, collision_normal[1]*penetration_norm];
+                ship.position = [p1[0] + penetration_vec[0] - offset, p1[1] + penetration_vec[1] - offset];
+                other.position = [p2[0] - penetration_vec[0] - other_offset, p2[1] - penetration_vec[1] - other_offset];
             }
         }
         
