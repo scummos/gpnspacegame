@@ -95,8 +95,7 @@ Rectangle {
             // ship coordinates specify the upper left corner
             var distance = Math.sqrt(Math.pow(ship.position[0]-other.position[0], 2)
                                     +Math.pow(ship.position[1]-other.position[1], 2));
-            // TODO: remove sqrt(2) scale with spheres
-            var effective_radius = (ship.radius + other.radius)*Math.sqrt(2);
+            var effective_radius = (ship.radius + other.radius);
             if ( distance < effective_radius ) {
                 // simple collision with equal masses: swap velocities
                 var v1 = ship.velocity;

@@ -6,6 +6,7 @@ Rectangle {
     color: playercolor
     width: 20
     height: 20
+    radius: 10
 
     property color playercolor: "green"
     
@@ -13,8 +14,6 @@ Rectangle {
     property variant velocity: [0.0, 0.0]
     property variant acceleration: [0.0, 0.0]
     property variant keys: []
-    
-    property int radius: 10
     
     property double shipAccel: 0.001
     
