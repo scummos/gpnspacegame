@@ -91,6 +91,26 @@ Rectangle {
             messagebox.opacity = 1;
         }
         
+        function wallCollisionFeedback(location, text, color) {
+            var comp = Qt.createComponent("WallCrashAnimation.qml");
+            if ( text > 20 ) {
+                text += "!!";
+            }
+            else if ( text > 10 ) {
+                text += "!";
+            }
+            var sprite = comp.createObject(arena, {
+                "x": location[0],
+                "y": location[1],
+                "text": text
+            });
+
+            if (sprite == null) {
+                // Error Handling
+                console.log("Error creating object");
+            }
+        }
+        
         function ouch(ship, damage) {
             console.log("damage: ", damage, ship);
             if ( damage < 4 ) {
@@ -102,6 +122,9 @@ Rectangle {
                message(ship.playername + " died. Fail!", 5000);
             }
             ship.healthbar().health = ship.health;
+            if ( damage > 0 ) {
+                wallCollisionFeedback([ship.x, ship.y], Math.round(damage), "red");
+            }
         }
         
         function applyDamageFromWallCollision(ship) {

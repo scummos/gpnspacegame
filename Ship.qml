@@ -1,5 +1,6 @@
 import QtQuick 1.1
 import Qt 4.7
+import Qt.labs.particles 1.0
 
 Rectangle {
     id: ship
