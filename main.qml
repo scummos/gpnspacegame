@@ -185,8 +185,8 @@ Rectangle {
                 var v2_t = [-(-other.velocity[0]*collision_normal[1] + other.velocity[1]*collision_normal[0])*collision_normal[1], 
                             (-other.velocity[0]*collision_normal[1] + other.velocity[1]*collision_normal[0])*collision_normal[0]];
                 console.log("COLLISION!");
-                ship.velocity =  [v2_n[0] - v1_t[1], v2_n[1] + v1_t[0]];
-                other.velocity = [v1_n[0] - v2_t[1], v1_n[1] + v2_t[0]];
+                ship.velocity =  [v2_n[0] + v1_t[0], v2_n[1] + v1_t[1]];
+                other.velocity = [v1_n[0] + v2_t[0], v1_n[1] + v2_t[1]];
                 // avoid penetration: move players apart
                 // half the penetration depth with some "offset factor"
                 // penetration_vec has half pen. depth as magnitude, then
