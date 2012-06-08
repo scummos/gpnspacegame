@@ -27,11 +27,16 @@ Rectangle {
     
     property double shipAccel: 0.001
     
+    // ticks since the most recent crash, negative
+    // "0" means "long ago"
+    property int recentlyCrashed: 0;
+    
     function tick() {
         // calculate norm of acceleration
         var abs_acceleration = Math.sqrt(acceleration[0]*acceleration[0] + acceleration[1]*acceleration[1]);
-        if(abs_acceleration == 0)
+        if ( abs_acceleration == 0 ) {
             abs_acceleration = 1.0;
+        }
         
         // update ship velocity
         var newVelocity = velocity;
@@ -39,9 +44,20 @@ Rectangle {
             newVelocity[i] += acceleration[i]*shipAccel*arena.timeInterval/abs_acceleration;
             if ( newVelocity[i]*acceleration[i] < 0 ) {
                 // opposite directions
-                newVelocity[i] *= 0.75
+                if ( recentlyCrashed ) {
+                    newVelocity[i] *= 0.98
+                }
+                else {
+                    newVelocity[i] *= 0.85
+                }
             }
-            newVelocity[i] *= 0.99; // damping
+            // damping
+            if ( recentlyCrashed ) {
+                newVelocity[i] *= 0.999;
+            }
+            else {
+                newVelocity[i] *= 0.995;
+            }
         }
         velocity = newVelocity;
         
@@ -51,6 +67,9 @@ Rectangle {
             newPosition[i] += velocity[i]*arena.timeInterval
         }
         position = newPosition;
+        if ( recentlyCrashed < 0 ) {
+            recentlyCrashed ++;
+        }
     }
     
     function changeAcceleration(amount, multiplier) {

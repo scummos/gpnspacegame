@@ -114,7 +114,6 @@ Rectangle {
         }
         
         function ouch(ship, damage) {
-            console.log("damage: ", damage, ship);
             if ( damage < 4 ) {
                 damage = 0;
             }
@@ -187,6 +186,8 @@ Rectangle {
                 var v2_t = [-(-other.velocity[0]*collision_normal[1] + other.velocity[1]*collision_normal[0])*collision_normal[1], 
                             (-other.velocity[0]*collision_normal[1] + other.velocity[1]*collision_normal[0])*collision_normal[0]];
                 console.log("COLLISION!");
+                ship.recentlyCrashed = -500/timeInterval; // half a second
+                other.recentlyCrashed = -500/timeInterval;
                 ship.velocity =  [v2_n[0] + v1_t[0], v2_n[1] + v1_t[1]];
                 other.velocity = [v1_n[0] + v2_t[0], v1_n[1] + v2_t[1]];
                 // avoid penetration: move players apart
