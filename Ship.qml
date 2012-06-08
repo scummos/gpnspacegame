@@ -9,6 +9,8 @@ Rectangle {
     width: 2*radius
     height: 2*radius
     opacity: 0
+    
+    property variant particleColors;
 
     property color playercolor: "green"
     property string playername;
@@ -64,7 +66,8 @@ Rectangle {
         var sprite = comp.createObject(arena, {
             "x": x + radius/2 + Math.random() * 8 + 1,
             "y": y + radius/2 + Math.random() * 8 - 5,
-            "opacity": opacity
+            "opacity": opacity,
+            "colors": particleColors
         });
 
         if (sprite == null) {
