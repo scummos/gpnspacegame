@@ -95,16 +95,24 @@ Rectangle {
         
         function wallCollisionFeedback(location, text, color) {
             var comp = Qt.createComponent("WallCrashAnimation.qml");
+            var fontsize = 11;
             if ( text > 20 ) {
                 text += "!!";
+                fontsize = 15;
             }
             else if ( text > 10 ) {
                 text += "!";
+                fontsize = 13;
+            }
+            else if ( text < 6 ) {
+                fontsize = 9;
             }
             var sprite = comp.createObject(arena, {
                 "x": location[0],
                 "y": location[1],
-                "text": text
+                "text": text,
+                "fontSize": fontsize,
+                "col": color
             });
 
             if (sprite == null) {
@@ -124,7 +132,7 @@ Rectangle {
             }
             ship.healthbar().health = ship.health;
             if ( damage > 0 ) {
-                wallCollisionFeedback([ship.x, ship.y], Math.round(damage), "red");
+                wallCollisionFeedback([ship.x, ship.y], Math.round(damage), ship.playercolor);
             }
         }
         
