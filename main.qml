@@ -27,7 +27,7 @@ Rectangle {
                 playercolor: "red"
                 keys: [Qt.Key_Left, Qt.Key_Right, Qt.Key_Down, Qt.Key_Up]
                 playername: "Player 1"
-                particleColors: ["#FFF700", "#FF9500", "#FF0073", "#004CFF", "#00FF6A"]
+                particleColors: ["#FF0051", "#FF0000", "#FF4C00", "#FFAE00", "#E6FF00"]
             }
             
             Ship {
@@ -38,7 +38,7 @@ Rectangle {
                 playercolor: "blue"
                 keys: [Qt.Key_A, Qt.Key_D, Qt.Key_S, Qt.Key_W]
                 playername: "Player 2"
-                particleColors: ["#FFF700", "#FF9500", "#FF0073", "#004CFF", "#00FF6A"]
+                particleColors: ["#0800FF", "#008CFF", "#00FFCC", "#00FF51", "#33FF00"]
             }
         }
         
