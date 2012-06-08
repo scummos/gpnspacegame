@@ -14,12 +14,25 @@ Rectangle {
     property variant acceleration: [0.0, 0.0]
     property variant keys: []
     
+    property int radius: 10
+    
     function tick() {
-        console.log("tick: ", position, velocity, acceleration);
+        // update ship velocity
+        var newVelocity = velocity;
+        for ( var i = 0; i < 2; i++ ) {
+            newVelocity[i] += acceleration[i];
+        }
+        velocity = newVelocity;
+        
+        var newPosition = position;
+        // update ship position
+        for ( var i = 0; i < 2; i++ ) {
+            newPosition[i] += velocity[i];
+        }
+        position = newPosition;
     }
     
     function changeAcceleration(amount, multiplier) {
-        console.log("acceleration changed: ", amount);
         var newValue = acceleration;
         for ( var i = 0; i < 2; i++ ) {
             newValue[i] += multiplier * amount[i];
@@ -27,14 +40,12 @@ Rectangle {
         acceleration = newValue;
     }
     
-    onAccelerationChanged: {
-        console.log("accel:", acceleration)
-    }
+//     onAccelerationChanged: {
+//         console.log("accel:", acceleration)
+//     }
     
     onPositionChanged: {
-        console.log("position changed:", position);
         x = position[0];
         y = position[1];
     }
-    
 }

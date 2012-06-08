@@ -8,15 +8,6 @@ Rectangle {
     color: "#FFBC00"
     
     Rectangle {
-        Timer {
-            interval: 200; running: true; repeat: true
-            onTriggered: {
-                for ( var i = 0; i < 2; i++ ) {
-                    players.children[i].tick();
-                }
-            }
-        }
-        
         id: arena
         width: 550
         height: 550
@@ -24,18 +15,20 @@ Rectangle {
         y: 25
         color: "#000000"
         
+        property double shipAccel: 0.02
+        
         Item {
             id: players
             Ship {
                 position: [50, 50]
                 playercolor: "red"
-                keys: [Qt.Key_Left, Qt.Key_Right, Qt.Key_Up, Qt.Key_Down]
+                keys: [Qt.Key_Left, Qt.Key_Right, Qt.Key_Down, Qt.Key_Up]
             }
             
             Ship {
                 position: [450, 450]
                 playercolor: "blue"
-                keys: [Qt.Key_A, Qt.Key_D, Qt.W, Qt.S]
+                keys: [Qt.Key_A, Qt.Key_D, Qt.Key_S, Qt.Key_W]
             }
         }
         
@@ -49,6 +42,7 @@ Rectangle {
             else if ( eventType == "released" ) {
                 multiplier = -1;
             }
+            multiplier *= shipAccel; // speed of the ships in general
             var accelerations = [ [-1.0, 0.0], [1.0, 0.0],
                                   [0.0, 1.0], [0.0, -1.0] ];
             for ( var i = 0; i < 4; i++ ) {
@@ -67,6 +61,33 @@ Rectangle {
         
         Keys.onReleased: {
             doHandleKey(event, "released")
+        }
+        
+        function reflect(ship, axis) {
+            var reflectedVelocity = ship.velocity;
+            reflectedVelocity[axis] = -reflectedVelocity[axis] * 0.75;
+            reflectedVelocity[1-axis] = reflectedVelocity[1-axis] * 0.75;
+            ship.velocity = reflectedVelocity;
+        }
+        
+        function eventuallyHandleArenaCollision(ship) {
+            if ( ship.x + ship.radius*2 > width || ship.x < 0 ) {
+                reflect(ship, 0);
+            }
+            if ( ship.y + ship.radius*2 > height || ship.y < 0 ) {
+                reflect(ship, 1);
+            }
+        }
+        
+        Timer {
+            interval: 4; running: true; repeat: true
+            onTriggered: {
+                for ( var i = 0; i < 2; i++ ) {
+                    players.children[i].tick();
+                    parent.eventuallyHandleArenaCollision(players.children[i]);
+                    parent.eventuallyHandleShipCollision(players.children[1-i]); // TODO 2-player only
+                }
+            }
         }
     }
 }
