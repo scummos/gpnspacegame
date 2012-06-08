@@ -60,5 +60,16 @@ Rectangle {
     onPositionChanged: {
         x = position[0];
         y = position[1];
+        
+        var comp = Qt.createComponent("Particle.qml");
+        var sprite = comp.createObject(arena, {
+            "x": x + radius,
+            "y": y + radius
+        });
+
+        if (sprite == null) {
+            // Error Handling
+            console.log("Error creating object");
+        }
     }
 }
