@@ -126,4 +126,21 @@ Rectangle {
             }
         }
     }
+    
+    Grid {
+        x: 25
+        columns: 2; rows: 1; spacing: 40;
+        HealthBar {
+            text: "Player 1"
+            barcolor: players.children[0].playercolor
+            health: 70
+        }
+        
+        HealthBar {
+            text: "Player 2"
+            barcolor: players.children[1].playercolor
+            health: 20
+        }
+    }
+    
 }
