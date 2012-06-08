@@ -91,14 +91,29 @@ Rectangle {
             }
         }
         
+        function eventuallyHandleShipCollision(ship, other) {
+            // ship coordinates specify the upper left corner
+            var distance = Math.sqrt(Math.pow(ship.position[0]-other.position[0], 2)
+                                    +Math.pow(ship.position[1]-other.position[1], 2));
+            if ( distance < ship.radius + other.radius ) {
+                console.log("BOOM!");
+                // simple collision with equal masses: swap velocities
+                var v1 = ship.velocity;
+                var v2 = other.velocity;
+                ship.velocity = v2;
+                other.velocity = v1;
+            }
+        }
+        
         Timer {
             interval: arena.timeInterval; running: true; repeat: true
             onTriggered: {
                 for ( var i = 0; i < 2; i++ ) {
                     players.children[i].tick();
                     parent.eventuallyHandleArenaCollision(players.children[i]);
-                    parent.eventuallyHandleShipCollision(players.children[1-i]); // TODO 2-player only
                 }
+                // TODO 2-player only
+                parent.eventuallyHandleShipCollision(players.children[0], players.children[1]);
             }
         }
     }
