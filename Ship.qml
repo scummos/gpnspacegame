@@ -37,6 +37,10 @@ Rectangle {
         var newVelocity = velocity;
         for ( var i = 0; i < 2; i++ ) {
             newVelocity[i] += acceleration[i]*shipAccel*arena.timeInterval/abs_acceleration;
+            if ( newVelocity[i]*acceleration[i] < 0 ) {
+                // opposite directions
+                newVelocity[i] *= 0.75
+            }
             newVelocity[i] *= 0.99; // damping
         }
         velocity = newVelocity;
