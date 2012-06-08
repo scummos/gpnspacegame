@@ -16,18 +16,25 @@ Rectangle {
     
     property int radius: 10
     
+    property double shipAccel: 0.002
+    
     function tick() {
+        // calculate norm of acceleration
+        var abs_acceleration = Math.sqrt(acceleration[0]*acceleration[0] + acceleration[1]*acceleration[1]);
+        if(abs_acceleration == 0)
+            abs_acceleration = 1.0;
+        
         // update ship velocity
         var newVelocity = velocity;
         for ( var i = 0; i < 2; i++ ) {
-            newVelocity[i] += acceleration[i];
+            newVelocity[i] += acceleration[i]*shipAccel*arena.timeInterval/abs_acceleration;
         }
         velocity = newVelocity;
         
         var newPosition = position;
         // update ship position
         for ( var i = 0; i < 2; i++ ) {
-            newPosition[i] += velocity[i];
+            newPosition[i] += velocity[i]*arena.timeInterval
         }
         position = newPosition;
     }

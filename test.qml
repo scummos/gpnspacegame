@@ -15,7 +15,7 @@ Rectangle {
         y: 25
         color: "#000000"
         
-        property double shipAccel: 0.02
+        property int timeInterval: 16
         
         Item {
             id: players
@@ -42,7 +42,7 @@ Rectangle {
             else if ( eventType == "released" ) {
                 multiplier = -1;
             }
-            multiplier *= shipAccel; // speed of the ships in general
+            
             var accelerations = [ [-1.0, 0.0], [1.0, 0.0],
                                   [0.0, 1.0], [0.0, -1.0] ];
             for ( var i = 0; i < 4; i++ ) {
@@ -92,7 +92,7 @@ Rectangle {
         }
         
         Timer {
-            interval: 4; running: true; repeat: true
+            interval: arena.timeInterval; running: true; repeat: true
             onTriggered: {
                 for ( var i = 0; i < 2; i++ ) {
                     players.children[i].tick();
