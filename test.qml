@@ -107,7 +107,7 @@ Rectangle {
                 var p2 = other.position;
                 // half the penetration depth scaled by the distance
                 // penetration_vec has half pen. depth as magnitude, then
-                var penetration_norm = (effective_radius-distance)/2.0 * distance;
+                var penetration_norm = (effective_radius-distance) * distance;
                 var penetration_vec = [(p1[0]-p2[0])/penetration_norm, (p1[1]-p2[1])/penetration_norm];
                 ship.position = [p1[0] + penetration_vec[0], p1[1] + penetration_vec[1]];
                 other.position = [p2[0] - penetration_vec[0], p2[1] - penetration_vec[1]];
