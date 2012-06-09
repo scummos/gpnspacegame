@@ -87,8 +87,8 @@ Rectangle {
     function spawnParticle(opacity) {
         var comp = Qt.createComponent("Particle.qml");
         var sprite = comp.createObject(arena, {
-            "x": x + radius/2 + Math.random() * 8 + 1,
-            "y": y + radius/2 + Math.random() * 8 - 5,
+            "x": x + radius + (Math.random()-0.5) * 8,
+            "y": y - radius/2 + (Math.random()-0.5) * 8,
             "opacity": opacity,
             "colors": particleColors
         });
