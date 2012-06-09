@@ -284,7 +284,7 @@ Rectangle {
                               (ship.y-arena_obstacle.y-arena_obstacle.radius)/arena_obstacle_dist]
                 var pos = ship.position;
                 // move the ship out of the obstacle
-                var factor = (ship.radius + arena_obstacle.radius - arena_obstacle_dist)
+                var factor = (ship.radius + arena_obstacle.radius - arena_obstacle_dist)*1.01
                 ship.position = [pos[0]+normal[0]*factor, pos[1]+normal[1]*factor]
                 
                 // reflect the ship along collision normal
