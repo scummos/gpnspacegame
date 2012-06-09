@@ -55,28 +55,15 @@ Grid {
     }
     
     function animateBash() {
-        bashAnimation.restart();
+        bashCooldown.runAnimation();
     }
     
     function resetBash() {
-        bashAnimation.stop();
-        bashtext.color = "yellow";
+        bashCooldown.reset();
     }
     
-    Text {
-        id: bashtext
-        color: "yellow"
-        text: "Bash!"
-        SequentialAnimation {
-            id: bashAnimation
-            ColorAnimation { target: bashtext; property: "color"; to: "black"; duration: 0 }
-            ColorAnimation { target: bashtext; property: "color"; to: "white"; duration: 8000 }
-            SequentialAnimation {
-                loops: 3
-                ColorAnimation { target: bashtext; property: "color"; to: "red"; duration: 100 }
-                ColorAnimation { target: bashtext; property: "color"; to: "yellow"; duration: 100 }
-            }
-        }
+    BashCooldown {
+        id: bashCooldown;
     }
     
     SequentialAnimation {

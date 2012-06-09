@@ -34,7 +34,7 @@ Rectangle {
         property int timeInterval: 16
         
         Rectangle {
-            z:200
+            z: 100
             id: help
             y: -200
             anchors.horizontalCenter: parent.horizontalCenter
@@ -61,10 +61,11 @@ Rectangle {
                 y: 20
                 anchors.horizontalCenter: parent.horizontalCenter
                 color: "white"
-                text: "<center>You can move around and use a Bash to kick the enemy away a bit (every 8 seconds).</right>\n"+
+                text: "<center>Hit your enemy to make him crash into walls!</center>\n"+
+                      "<center>You can move around and use a Bash to kick the enemy away a bit (every 8 seconds).</right>\n"+
                       "<center>Player 1 controls: Arrow keys + Ctrl (Bash)</center>\n"+
-                      "<center>Player 2 controls: WASD + C (Bash)</center>\n"+
-                      "<center>Hit your enemy to make him crash into walls!</center>\n"+
+                      "<center>Player 2 controls: WASD + Shift (Bash)</center>\n"+
+                      
                       "<center>The faster you hit a wall, the more damage you take.</center>\n"+
                       "<center>If you recently collided with an enemy, more damage will be dealt by crashes.</center>\n"+
                       "<center>Flying fast regenerates hitpoints.</center>\n"
