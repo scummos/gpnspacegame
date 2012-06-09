@@ -52,7 +52,7 @@ Rectangle {
         Rectangle {
             id: "arena_obstacle"
             color: canvas.color
-            radius: 100
+            radius: 50
             x: arena.width/2-radius
             y: arena.height/2-radius
             width: radius*2
@@ -271,13 +271,17 @@ Rectangle {
                 var normal = [(ship.x-arena_obstacle.x-arena_obstacle.radius)/arena_obstacle_dist,
                               (ship.y-arena_obstacle.y-arena_obstacle.radius)/arena_obstacle_dist]
                 var pos = ship.position;
+                // move the ship out of the obstacle
                 var factor = (ship.radius + arena_obstacle.radius - arena_obstacle_dist)
                 ship.position = [pos[0]+normal[0]*factor, pos[1]+normal[1]*factor]
+                
+                // reflect the ship along collision normal
                 var v_n_fac = ship.velocity[0]*normal[0] + ship.velocity[1]*normal[1]
                 var v_t_fac = -ship.velocity[0]*normal[1] + ship.velocity[1]*normal[0]
                 var v_n = [v_n_fac*normal[0], v_n_fac*normal[1]]
                 var v_t = [-v_t_fac*normal[1], v_t_fac*normal[0]]
                 ship.velocity = [-v_n[0] + v_t[0], -v_n[1] + v_t[1]]
+                
                 applyDamageFromWallCollision(ship)
             }
         }
