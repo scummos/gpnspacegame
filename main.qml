@@ -138,11 +138,27 @@ Rectangle {
         focus: true
         
         function doHandleKey(event, eventType) {
+            var exclusiveKeys = [
+                [Qt.Key_Right, Qt.Key_Left],
+                [Qt.Key_Up, Qt.Key_Down],
+                [Qt.Key_A, Qt.Key_D],
+                [Qt.Key_W, Qt.Key_S]
+            ]
             var keymap = new Object()
+            
             for( var idx in canvas.pressedKeys ) {
                 keymap[idx] = canvas.pressedKeys[idx];
             }
             if ( eventType == "pressed" ) {
+                for ( var i = 0; i < 4; i++ ) {
+                    for ( var j = 0; j < 2; j++ )  {
+                        if ( event.key == exclusiveKeys[i][j] && canvas.pressedKeys[exclusiveKeys[i][1-j]] == true ) {
+                            console.log("collision detected");
+                            keymap[exclusiveKeys[i][1-j]] = 0;
+                            keymap[exclusiveKeys[i][j]] = 0;
+                        }
+                    }
+                }
                 keymap[event.key] = 1;
             }
             else if ( eventType == "released" ) {
@@ -166,7 +182,6 @@ Rectangle {
         }
         
         Keys.onPressed: {
-            event.accepted = true;
             if ( canvas.state == "NotStartedState" ) {
                 if ( event.key == Qt.Key_Space ) {
                     newGame();
@@ -193,11 +208,12 @@ Rectangle {
                 }
             }
             doHandleKey(event, "pressed")
+            event.accepted = true;
         }
         
         Keys.onReleased: {
-            event.accepted = true;
             doHandleKey(event, "released")
+            event.accepted = true;
         }
         
         Text {
