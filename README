@@ -1,0 +1,13 @@
+To build the game, run
+ qmake
+ make
+in this directory. Qt >= 4.7 with Declarative enabled is required.
+
+Alternatively, you can run the game in qmlviewer directly:
+ qmlviewer main.qml
+
+For instructions on how to play, press F1 on the game opening screen. Have fun!
+
+We also have nice sound effects, but somehow nobody has the QtMultimedia module (including us)
+which is required for playing sound from pure QML applications. Thus, they're disabled
+in this version.
