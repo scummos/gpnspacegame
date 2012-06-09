@@ -56,6 +56,17 @@ Rectangle {
     }
     
     function tick() {
+        // accumulate acceleration based on pressed keys
+        acceleration = [0.0, 0.0]
+        var acceleration_idx = [ [-1.0, 0.0], [1.0, 0.0],
+                                [0.0, 1.0], [0.0, -1.0] ];
+        for ( var i = 0; i < 4; i++ ) {
+            if ( canvas.pressedKeys[keys[i]] == true ) {
+               acceleration = [acceleration[0]+acceleration_idx[i][0],
+                               acceleration[1]+acceleration_idx[i][1]]
+            }
+        }
+        
         // calculate norm of acceleration
         var abs_acceleration = Math.sqrt(acceleration[0]*acceleration[0] + acceleration[1]*acceleration[1]);
         if ( abs_acceleration == 0 ) {
@@ -109,18 +120,6 @@ Rectangle {
             boostCooldown ++;
         }
     }
-    
-    function changeAcceleration(amount, multiplier) {
-        var newValue = acceleration;
-        for ( var i = 0; i < 2; i++ ) {
-            newValue[i] += multiplier * amount[i];
-        }
-        acceleration = newValue;
-    }
-    
-//     onAccelerationChanged: {
-//         console.log("accel:", acceleration)
-//     }
     
     function spawnParticle(opacity) {
         var comp = Qt.createComponent("Particle.qml");

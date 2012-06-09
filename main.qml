@@ -8,6 +8,8 @@ Rectangle {
     color: "#333333"
     state: "NotStartedState"
     
+    property variant pressedKeys: {}
+    
     states: [
         State {
             name: "NotStartedState"
@@ -134,23 +136,17 @@ Rectangle {
         focus: true
         
         function doHandleKey(event, eventType) {
-            var multiplier = 0;
+            var keymap = new Object()
+            for( var idx in canvas.pressedKeys ) {
+                keymap[idx] = canvas.pressedKeys[idx];
+            }
             if ( eventType == "pressed" ) {
-                multiplier = +1;
+                keymap[event.key] = 1;
             }
             else if ( eventType == "released" ) {
-                multiplier = -1;
+                keymap[event.key] = 0;
             }
-            
-            var accelerations = [ [-1.0, 0.0], [1.0, 0.0],
-                                  [0.0, 1.0], [0.0, -1.0] ];
-            for ( var i = 0; i < 4; i++ ) {
-                for ( var j = 0; j < 2; j++ ) {
-                    if ( event.key == players.children[j].keys[i] ) {
-                        players.children[j].changeAcceleration(accelerations[i], multiplier)
-                    }
-                }
-            }
+            canvas.pressedKeys = keymap
         }
         
         function newGame() {
