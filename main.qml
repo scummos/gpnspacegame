@@ -40,8 +40,9 @@ Rectangle {
                 y: 20
                 anchors.horizontalCenter: parent.horizontalCenter
                 color: "white"
-                text: "<center>Player 1 controls: Arrow keys</center>\n"+
-                      "<center>Player 2 controls: WASD</center>\n"+
+                text: "<center>You can move around and use a Bash to kick the enemy away a bit (every 8 seconds).</center>\n"+
+                      "<center>Player 1 controls: Arrow keys + Ctrl (Bash)</center>\n"+
+                      "<center>Player 2 controls: WASD + C (Bash)</center>\n"+
                       "<center>Hit your enemy to make him crash into walls!</center>\n"+
                       "<center>The faster you hit a wall, the more damage you take.</center>\n"+
                       "<center>If you recently collided with an enemy, more damage will be dealt by crashes.</center>\n"+
@@ -150,8 +151,17 @@ Rectangle {
             if ( event.key == Qt.Key_Space && canvas.state == "NotStartedState" ) {
                 newGame();
             }
-            if ( event.key == Qt.Key_Escape && canvas.state == "GameRunningState" ) {
-                canvas.state = "NotStartedState";
+            if ( canvas.state == "GameRunningState" ) {
+                if ( event.key == Qt.Key_Escape  ) {
+                    canvas.state = "NotStartedState";
+                    message("<center>GPNSpaceGame</center>");
+                }
+                if ( event.key == Qt.Key_C ) {
+                    players.children[1].tryBoost(players.children[0]);
+                }
+                if ( event.key == Qt.Key_Control ) {
+                    players.children[0].tryBoost(players.children[1]);
+                }
             }
             doHandleKey(event, "pressed")
         }

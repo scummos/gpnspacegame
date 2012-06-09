@@ -31,6 +31,29 @@ Rectangle {
     // "0" means "long ago"
     property int recentlyCrashed: 0;
     property int reducedDamage: 0;
+    property int boostCooldown: 0;
+    
+    function tryBoost(other) {
+        if ( boostCooldown < 0 ) {
+            return false;
+        }
+        var strength = Math.pow(position[0]-other.position[0], 2)
+                      +Math.pow(position[1]-other.position[1], 2);
+        var distance = Math.sqrt(strength);
+        strength = Math.max(1 / Math.sqrt(strength) * 50, 0.5);
+        var direction_x = position[0]-other.position[0];
+        var direction_y = position[1]-other.position[1];
+        direction_x /= distance;
+        direction_y /= distance;
+        console.log("str:", strength);
+        var newVelocity = other.velocity;
+        newVelocity[0] -= direction_x * strength;
+        newVelocity[1] -= direction_y * strength;
+        other.velocity = newVelocity;
+        boostCooldown = -8000/arena.timeInterval;
+        healthbar().animateBash();
+        return true;
+    }
     
     function tick() {
         // calculate norm of acceleration
@@ -81,6 +104,9 @@ Rectangle {
         }
         if ( reducedDamage < 0 ) {
             reducedDamage ++;
+        }
+        if ( boostCooldown < 0 ) {
+            boostCooldown ++;
         }
     }
     

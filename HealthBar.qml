@@ -1,7 +1,7 @@
 import QtQuick 1.1
 
 Grid {
-    rows: 1; columns: 2; spacing: 20
+    rows: 1; columns: 3; spacing: 20
     
     property string text : "<none>"
     property int health: -1;
@@ -54,11 +54,31 @@ Grid {
         color: Qt.rgba(0, 0, 0, 0.2)
     }
     
+    function animateBash() {
+        bashAnimation.restart();
+    }
+    
+    Text {
+        id: bashtext
+        color: "yellow"
+        text: "Bash!"
+        SequentialAnimation {
+            id: bashAnimation
+            ColorAnimation { target: bashtext; property: "color"; to: "black"; duration: 0 }
+            ColorAnimation { target: bashtext; property: "color"; to: "white"; duration: 8000 }
+            SequentialAnimation {
+                loops: 3
+                ColorAnimation { target: bashtext; property: "color"; to: "red"; duration: 100 }
+                ColorAnimation { target: bashtext; property: "color"; to: "yellow"; duration: 100 }
+            }
+        }
+    }
+    
     SequentialAnimation {
         id: "increase_health"
         running: false;
         loops: 1;
-        ColorAnimation { target: children[1].children[0]; property: "color"; to: Qt.lighter(barcolor, 1.2); duration: 50 }
+        ColorAnimation { target: children[1].children[0]; property: "color"; to: Qt.lighter(barcolor, 3.2); duration: 50 }
         ColorAnimation { target: children[1].children[0]; property: "color"; to: barcolor; duration: 200 }
     }
     SequentialAnimation {
