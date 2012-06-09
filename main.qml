@@ -10,6 +10,10 @@ Rectangle {
     
     property variant pressedKeys: {}
     
+    //Sounds {
+    //    id: sounds
+    //}
+    
     states: [
         State {
             name: "NotStartedState"
