@@ -85,7 +85,7 @@ Rectangle {
             }
             font.pointSize:35
             color:"white"
-            text:"FOOBAR!"
+            text:"<undefined>"
         }
         
         function message(text, timeout) {
@@ -96,16 +96,18 @@ Rectangle {
         function wallCollisionFeedback(location, text, color) {
             var comp = Qt.createComponent("WallCrashAnimation.qml");
             var fontsize = 11;
-            if ( text > 20 ) {
-                text += "!!";
-                fontsize = 15;
-            }
-            else if ( text > 10 ) {
-                text += "!";
-                fontsize = 13;
-            }
-            else if ( text < 6 ) {
-                fontsize = 9;
+            if ( text !== "" ) {
+                if ( text > 20 ) {
+                    text += "!!";
+                    fontsize = 15;
+                }
+                else if ( text > 10 ) {
+                    text += "!";
+                    fontsize = 13;
+                }
+                else if ( text < 6 ) {
+                    fontsize = 9;
+                }
             }
             var sprite = comp.createObject(arena, {
                 "x": location[0],
@@ -131,10 +133,10 @@ Rectangle {
             ship.health -= damage;
             if ( ship.health <= 0 ) {
                ship.health = 0;
-               message(ship.playername + " died. Fail!", 5000);
+               message("<center>Game Over</center>\n<center>" + ship.playername + " died first.</center>", 5000);
             }
             if ( damage > 0 ) {
-                wallCollisionFeedback([ship.x, ship.y], Math.round(damage), ship.playercolor);
+                wallCollisionFeedback([ship.x+ship.radius, ship.y+ship.radius], Math.round(damage), ship.playercolor);
             }
         }
         
@@ -207,6 +209,7 @@ Rectangle {
                 var penetration_vec = [collision_normal[0]*penetration_norm, collision_normal[1]*penetration_norm];
                 ship.position = [p1[0] + penetration_vec[0] - offset, p1[1] + penetration_vec[1] - offset];
                 other.position = [p2[0] - penetration_vec[0] - other_offset, p2[1] - penetration_vec[1] - other_offset];
+                wallCollisionFeedback([(ship.x+other.x)/2, (ship.y+other.y)/2], "", Qt.rgba(0, 0, 0, 1)); // don't display text
             }
         }
         
