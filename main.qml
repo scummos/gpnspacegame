@@ -12,11 +12,13 @@ Rectangle {
         State {
             name: "NotStartedState"
             PropertyChanges { target: startGameBanner; visible: true}
+            PropertyChanges { target: help; visible: true }
         },
         State {
             name: "GameRunningState"
             PropertyChanges { target: messagebox; visible: false }
             PropertyChanges { target: startGameBanner; visible: false }
+            PropertyChanges { target: help; visible: false }
         }
     ]
     
@@ -31,7 +33,25 @@ Rectangle {
         property int timeInterval: 16
         
         Rectangle {
+            z:200
+            id: help
+            anchors.horizontalCenter: parent.horizontalCenter
+            Text {
+                y: 20
+                anchors.horizontalCenter: parent.horizontalCenter
+                color: "white"
+                text: "<center>Player 1 controls: Arrow keys</center>\n"+
+                      "<center>Player 2 controls: WASD</center>\n"+
+                      "<center>Hit your enemy to make him crash into walls!</center>\n"+
+                      "<center>The faster you hit a wall, the more damage you take.</center>\n"+
+                      "<center>If you recently collided with an enemy, more damage will be dealt by crashes.</center>\n"+
+                      "<center>Flying fast regenerates hitpoints.</center>\n"
+            }
+        }
+        
+        Rectangle {
             id: startGameBanner;
+            z:200
             anchors.verticalCenter: parent.verticalCenter
             anchors.horizontalCenter: parent.horizontalCenter
             Text {
@@ -132,6 +152,7 @@ Rectangle {
         }
         
         Text {
+            z:200
             id: messagebox
             anchors.verticalCenter: parent.verticalCenter
             anchors.horizontalCenter: parent.horizontalCenter
