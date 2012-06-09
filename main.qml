@@ -138,7 +138,7 @@ Rectangle {
         
         function applyDamageFromWallCollision(ship) {
             console.log(ship.velocity);
-            var damage = ( Math.pow(ship.velocity[0], 2) + Math.pow(ship.velocity[1], 2) ) * 20;
+            var damage = ( Math.pow(ship.velocity[0], 2) + Math.pow(ship.velocity[1], 2) ) * 40;
             ouch(ship, damage);
         }
         
