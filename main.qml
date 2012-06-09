@@ -182,7 +182,7 @@ Rectangle {
             if ( canvas.state == "GameRunningState" ) {
                 if ( event.key == Qt.Key_Escape  ) {
                     canvas.state = "NotStartedState";
-                    message("<center>GPNSpaceGame</center>");
+                    message("<center>QSwoosh</center>");
                 }
                 if ( event.key == Qt.Key_Shift ) {
                     players.children[1].tryBoost(players.children[0]);
@@ -212,7 +212,7 @@ Rectangle {
             }
             font.pointSize:35
             color:"white"
-            text:"<center>GPNSpaceGame</center>"
+            text:"<center>QSwoosh</center>"
         }
         
         function message(text, timeout) {
