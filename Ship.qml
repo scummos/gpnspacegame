@@ -62,8 +62,7 @@ Rectangle {
         }
         velocity = newVelocity;
         var abs_velocity = Math.sqrt(Math.pow(velocity[0],2) + Math.pow(velocity[1],2));
-        // console.log(recentlyCrashed, " ", abs_velocity);
-        if ( recentlyCrashed == 0 && abs_velocity > 0.68) {
+        if ( reducedDamage == 0 && abs_velocity > 0.68) {
             health += 2.4/arena.timeInterval;
             if(health > 100) {
                 health = 100;
