@@ -1,8 +1,8 @@
 import QtQuick 1.1
-import QtMultimediaKit 1.0
+//import QtMultimediaKit 1.0
 
 Item {
-    SoundElement {
+/*    SoundElement {
         id: "sound_damage"
         source: "sounds/Damage.wav"
     }
@@ -25,5 +25,5 @@ Item {
     SoundElement {
         id: "sound_boost"
         source: "sounds/Boost.wav"
-    }   
+    }   */
 }
