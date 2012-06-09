@@ -153,7 +153,7 @@ Rectangle {
                 for ( var i = 0; i < 4; i++ ) {
                     for ( var j = 0; j < 2; j++ )  {
                         if ( event.key == exclusiveKeys[i][j] && canvas.pressedKeys[exclusiveKeys[i][1-j]] == true ) {
-                            console.log("collision detected");
+//                             console.log("collision detected");
                             keymap[exclusiveKeys[i][1-j]] = 0;
                             keymap[exclusiveKeys[i][j]] = 0;
                         }
