@@ -14,12 +14,20 @@ Rectangle {
         State {
             name: "NotStartedState"
             PropertyChanges { target: startGameBanner; visible: true }
+            PropertyChanges { target: startGameText; text: "Press Spacebar to start a new game, F1 for help" }
         },
         State {
             name: "GameRunningState"
             PropertyChanges { target: messagebox; visible: false }
             PropertyChanges { target: startGameBanner; visible: false }
             PropertyChanges { target: help; state: "NotVisibleState" }
+        },
+        State {
+            name: "DemoState"
+            PropertyChanges { target: messagebox; visible: false }
+            PropertyChanges { target: startGameBanner; visible: true }
+            PropertyChanges { target: help; state: "NotVisibleState" }
+            PropertyChanges { target: startGameText; text: "Demo mode - press any key" }
         }
     ]
     
@@ -88,6 +96,7 @@ Rectangle {
             anchors.verticalCenter: parent.verticalCenter
             anchors.horizontalCenter: parent.horizontalCenter
             Text {
+                id: startGameText;
                 anchors.horizontalCenter: parent.horizontalCenter
                 y: 80
                 opacity:1
@@ -181,10 +190,35 @@ Rectangle {
             players.children[1].position = [450, 450]
         }
         
+        Timer {
+            id: demoTimer
+            interval: 200; running: false; repeat: true
+            onTriggered: {
+                for ( var i = 0; i < 2; i++ ) {
+                    players.children[i].tick();
+                    var currentAccel = players.children[i].acceleration;
+                    var distance = Math.sqrt(Math.pow(players.children[i].position[0]-players.children[1-i].position[0], 2)
+                                  +Math.pow(players.children[i].position[1]-players.children[1-i].position[1], 2));
+                    var direction = [0, 0]
+                    for ( var k = 0; k < 2; k++ ) {
+                        direction[k] = players.children[i].position[k]-players.children[1-i].position[k];
+                        direction[k] /= distance;
+                        currentAccel[k] += (Math.random()-0.5)*0.4 - (players.children[i].position[k]-300)/600*0.35 - direction[k]*0.01;
+                        currentAccel[k] *= Math.random() * 0.4;
+                    }
+                    players.children[i].acceleration = currentAccel;
+                }
+            }
+        }
+        
         Keys.onPressed: {
             if ( canvas.state == "NotStartedState" ) {
                 if ( event.key == Qt.Key_Space ) {
                     newGame();
+                }
+                if ( event.key == Qt.Key_F2 ) {
+                    demoTimer.start();
+                    canvas.state = "DemoState";
                 }
                 if ( event.key == Qt.Key_F1 ) {
                     if ( help.state == "VisibleState" ) {
@@ -195,7 +229,11 @@ Rectangle {
                     }
                 }
             }
-            if ( canvas.state == "GameRunningState" ) {
+            else if ( canvas.state == "DemoState" ) {
+                canvas.state = "NotStartedState";
+                demoTimer.stop();
+            }
+            else if ( canvas.state == "GameRunningState" ) {
                 if ( event.key == Qt.Key_Escape  ) {
                     canvas.state = "NotStartedState";
                     message("<center>QSwoosh</center>");

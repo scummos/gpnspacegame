@@ -71,13 +71,15 @@ Rectangle {
     
     function tick() {
         // accumulate acceleration based on pressed keys
-        acceleration = [0.0, 0.0]
-        var acceleration_idx = [ [-1.0, 0.0], [1.0, 0.0],
-                                [0.0, 1.0], [0.0, -1.0] ];
-        for ( var i = 0; i < 4; i++ ) {
-            if ( canvas.pressedKeys[keys[i]] == true ) {
-               acceleration = [acceleration[0]+acceleration_idx[i][0],
-                               acceleration[1]+acceleration_idx[i][1]]
+        if ( canvas.state != "DemoState" ) {
+            acceleration = [0.0, 0.0]
+            var acceleration_idx = [ [-1.0, 0.0], [1.0, 0.0],
+                                    [0.0, 1.0], [0.0, -1.0] ];
+            for ( var i = 0; i < 4; i++ ) {
+                if ( canvas.pressedKeys[keys[i]] == true ) {
+                acceleration = [acceleration[0]+acceleration_idx[i][0],
+                                acceleration[1]+acceleration_idx[i][1]]
+                }
             }
         }
         
