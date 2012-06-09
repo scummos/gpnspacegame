@@ -280,21 +280,26 @@ Rectangle {
             return damage
         }
         
-        function reflect(ship, axis) {
+        function reflect(ship, normal) {
             var damage = applyDamageFromWallCollision(ship);
-            var reflectedVelocity = ship.velocity;
             var dampening = 0.75;
+            // extra dampening on heavy damages
             if ( damage > 15 ) {
                 dampening = 0.25*Math.exp(-(damage-15)/10.0) + 0.5
             }
-            reflectedVelocity[axis] = -reflectedVelocity[axis] *dampening;
-            reflectedVelocity[1-axis] = reflectedVelocity[1-axis] * dampening;
-            ship.velocity = reflectedVelocity;
+            
+            // reflect the ship along collision normal
+            var v_n_fac = ship.velocity[0]*normal[0] + ship.velocity[1]*normal[1];
+            var v_t_fac = -ship.velocity[0]*normal[1] + ship.velocity[1]*normal[0];
+            var v_n = [v_n_fac*normal[0], v_n_fac*normal[1]];
+            var v_t = [-v_t_fac*normal[1], v_t_fac*normal[0]];
+
+            ship.velocity = [(-v_n[0] + v_t[0])*dampening, (-v_n[1] + v_t[1])*dampening];
         }
         
         function eventuallyHandleArenaCollision(ship) {
             if ( ship.x + ship.radius*2 > width || ship.x < 0 ) {
-                reflect(ship, 0);
+                reflect(ship, [1, 0]);
                 var pos = ship.position;
                 if(ship.x < 0)
                     pos[0] = 0;
@@ -303,7 +308,7 @@ Rectangle {
                 ship.position = pos;
             }
             if ( ship.y + ship.radius*2 > height || ship.y < 0 ) {
-                reflect(ship, 1);
+                reflect(ship, [0, 1]);
                 var pos = ship.position;
                 if(ship.y < 0)
                     pos[1] = 0;
@@ -314,25 +319,13 @@ Rectangle {
             var arena_obstacle_dist = Math.sqrt(Math.pow(ship.position[0]-arena_obstacle.x+arena.x/2-arena_obstacle.radius, 2)
                                     + Math.pow(ship.position[1]-arena_obstacle.y+arena.y/2-arena_obstacle.radius, 2))
             if( arena_obstacle_dist < ship.radius + arena_obstacle.radius ) {
-                var normal = [(ship.x-arena_obstacle.x-arena_obstacle.radius)/arena_obstacle_dist,
-                              (ship.y-arena_obstacle.y-arena_obstacle.radius)/arena_obstacle_dist]
+                var normal = [(ship.x-arena_obstacle.x+arena.x/2-arena_obstacle.radius)/arena_obstacle_dist,
+                              (ship.y-arena_obstacle.y+arena.y/2-arena_obstacle.radius)/arena_obstacle_dist]
+                reflect(ship, normal);
                 var pos = ship.position;
                 // move the ship out of the obstacle
                 var factor = (ship.radius + arena_obstacle.radius - arena_obstacle_dist)*1.1
                 ship.position = [pos[0]+normal[0]*factor, pos[1]+normal[1]*factor];
-                
-                var damage = applyDamageFromWallCollision(ship);
-                var dampening = 0.75;
-                if ( damage > 15 ) {
-                    dampening = 0.25*Math.exp(-(damage-15)/10.0) + 0.5
-                }
-                
-                // reflect the ship along collision normal
-                var v_n_fac = ship.velocity[0]*normal[0] + ship.velocity[1]*normal[1];
-                var v_t_fac = -ship.velocity[0]*normal[1] + ship.velocity[1]*normal[0];
-                var v_n = [v_n_fac*normal[0], v_n_fac*normal[1]];
-                var v_t = [-v_t_fac*normal[1], v_t_fac*normal[0]];
-                ship.velocity = [(-v_n[0] + v_t[0])*dampening, (-v_n[1] + v_t[1])*dampening];
             }
         }
         
