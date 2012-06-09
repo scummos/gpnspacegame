@@ -277,13 +277,18 @@ Rectangle {
             console.log(ship.velocity);
             var damage = ( Math.pow(ship.velocity[0], 2) + Math.pow(ship.velocity[1], 2) ) * 30;
             ouch(ship, damage);
+            return damage
         }
         
         function reflect(ship, axis) {
-            applyDamageFromWallCollision(ship);
+            var damage = applyDamageFromWallCollision(ship);
             var reflectedVelocity = ship.velocity;
-            reflectedVelocity[axis] = -reflectedVelocity[axis] * 0.75;
-            reflectedVelocity[1-axis] = reflectedVelocity[1-axis] * 0.75;
+            var dampening = 0.75;
+            if ( damage > 15 ) {
+                dampening = 0.25*Math.exp(-(damage-15)/10.0) + 0.5
+            }
+            reflectedVelocity[axis] = -reflectedVelocity[axis] *dampening;
+            reflectedVelocity[1-axis] = reflectedVelocity[1-axis] * dampening;
             ship.velocity = reflectedVelocity;
         }
         
@@ -313,17 +318,21 @@ Rectangle {
                               (ship.y-arena_obstacle.y-arena_obstacle.radius)/arena_obstacle_dist]
                 var pos = ship.position;
                 // move the ship out of the obstacle
-                var factor = (ship.radius + arena_obstacle.radius - arena_obstacle_dist)*1.01
-                ship.position = [pos[0]+normal[0]*factor, pos[1]+normal[1]*factor]
+                var factor = (ship.radius + arena_obstacle.radius - arena_obstacle_dist)*1.1
+                ship.position = [pos[0]+normal[0]*factor, pos[1]+normal[1]*factor];
+                
+                var damage = applyDamageFromWallCollision(ship);
+                var dampening = 0.75;
+                if ( damage > 15 ) {
+                    dampening = 0.25*Math.exp(-(damage-15)/10.0) + 0.5
+                }
                 
                 // reflect the ship along collision normal
-                var v_n_fac = ship.velocity[0]*normal[0] + ship.velocity[1]*normal[1]
-                var v_t_fac = -ship.velocity[0]*normal[1] + ship.velocity[1]*normal[0]
-                var v_n = [v_n_fac*normal[0], v_n_fac*normal[1]]
-                var v_t = [-v_t_fac*normal[1], v_t_fac*normal[0]]
-                ship.velocity = [-v_n[0] + v_t[0], -v_n[1] + v_t[1]]
-                
-                applyDamageFromWallCollision(ship)
+                var v_n_fac = ship.velocity[0]*normal[0] + ship.velocity[1]*normal[1];
+                var v_t_fac = -ship.velocity[0]*normal[1] + ship.velocity[1]*normal[0];
+                var v_n = [v_n_fac*normal[0], v_n_fac*normal[1]];
+                var v_t = [-v_t_fac*normal[1], v_t_fac*normal[0]];
+                ship.velocity = [(-v_n[0] + v_t[0])*dampening, (-v_n[1] + v_t[1])*dampening];
             }
         }
         
