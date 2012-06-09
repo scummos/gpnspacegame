@@ -214,7 +214,7 @@ Rectangle {
                     duration:300
                 }
             }
-            font.pointSize:35
+            font.pointSize:27
             color:"white"
             text:"<center>QSwoosh</center>"
         }

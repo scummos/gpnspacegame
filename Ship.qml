@@ -50,8 +50,24 @@ Rectangle {
         newVelocity[0] -= direction_x * strength;
         newVelocity[1] -= direction_y * strength;
         other.velocity = newVelocity;
-        boostCooldown = -8000/arena.timeInterval;
+        boostCooldown = -8000/arena.timeInterval; // in ticks
         healthbar().animateBash();
+        var comp = Qt.createComponent("BashAnim.qml");
+        var angle = Math.atan(direction_y / direction_x) * 360 / (2*3.14)
+        if ( direction_x > 0 && direction_y > 0 || direction_x > 0 && direction_y < 0 ) {
+            angle += 180;
+        }
+        console.log("angle:", angle);
+        var sprite = comp.createObject(arena, {
+            "x": other.position[0],
+            "y": other.position[1],
+            "angle": angle,
+            "strength": strength * 100
+        });
+
+        if (sprite == null) {
+            console.log("Error creating object");
+        }
         return true;
     }
     
