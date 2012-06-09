@@ -35,7 +35,7 @@ Item {
             running: true
             onTriggered: {
                 parent.opacity = 0;
-                parent.destroy(3000);
+                parent.parent.destroy(3000);
             }
         }
     }

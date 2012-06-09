@@ -20,7 +20,7 @@ Item {
             running: true
             onTriggered: {
                 parent.opacity = 0
-                parent.destroy(2000)
+                parent.parent.destroy(2000)
             }
         }
     }
