@@ -11,14 +11,13 @@ Rectangle {
     states: [
         State {
             name: "NotStartedState"
-            PropertyChanges { target: startGameBanner; visible: true}
-            PropertyChanges { target: help; visible: true }
+            PropertyChanges { target: startGameBanner; visible: true }
         },
         State {
             name: "GameRunningState"
             PropertyChanges { target: messagebox; visible: false }
             PropertyChanges { target: startGameBanner; visible: false }
-            PropertyChanges { target: help; visible: false }
+            PropertyChanges { target: help; state: "NotVisibleState" }
         }
     ]
     
@@ -35,7 +34,27 @@ Rectangle {
         Rectangle {
             z:200
             id: help
+            y: -200
             anchors.horizontalCenter: parent.horizontalCenter
+            state: "NotVisibleState"
+            states: [
+                State {
+                    name: "NotVisibleState"
+                    PropertyChanges { target: help; y: -200 }
+                    PropertyChanges { target: help; opacity: 0 }
+                },
+                State {
+                    name: "VisibleState"
+                    PropertyChanges { target: help; y: 0 }
+                    PropertyChanges { target: help; opacity: 1 }
+                }
+            ]
+            Behavior on y {
+                NumberAnimation { duration: 200 }
+            }
+            Behavior on opacity {
+                NumberAnimation { duration: 200 }
+            }
             Text {
                 y: 20
                 anchors.horizontalCenter: parent.horizontalCenter
@@ -76,7 +95,7 @@ Rectangle {
                 }
                 font.pointSize:11
                 color:"white"
-                text:"Press Spacebar to start a new game"
+                text:"Press Spacebar to start a new game, F1 for help"
                 
                 SequentialAnimation {
                     loops: Animation.Infinite
@@ -150,8 +169,18 @@ Rectangle {
         
         Keys.onPressed: {
             event.accepted = true;
-            if ( event.key == Qt.Key_Space && canvas.state == "NotStartedState" ) {
-                newGame();
+            if ( canvas.state == "NotStartedState" ) {
+                if ( event.key == Qt.Key_Space ) {
+                    newGame();
+                }
+                if ( event.key == Qt.Key_F1 ) {
+                    if ( help.state == "VisibleState" ) {
+                        help.state = "NotVisibleState";
+                    }
+                    else {
+                        help.state = "VisibleState";
+                    }
+                }
             }
             if ( canvas.state == "GameRunningState" ) {
                 if ( event.key == Qt.Key_Escape  ) {
