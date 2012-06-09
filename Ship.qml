@@ -44,19 +44,19 @@ Rectangle {
             newVelocity[i] += acceleration[i]*shipAccel*arena.timeInterval/abs_acceleration;
             if ( newVelocity[i]*acceleration[i] < 0 ) {
                 // opposite directions
-                if ( recentlyCrashed ) {
-                    newVelocity[i] *= 0.98
+                if ( recentlyCrashed == 0 ) {
+                    newVelocity[i] *= 0.85
                 }
                 else {
-                    newVelocity[i] *= 0.85
+                    newVelocity[i] *= 0.95
                 }
             }
             // damping
-            if ( recentlyCrashed ) {
-                newVelocity[i] *= 0.999;
+            if ( recentlyCrashed == 0) {
+                newVelocity[i] *= 0.995;
             }
             else {
-                newVelocity[i] *= 0.995;
+                newVelocity[i] *= 0.998;
             }
         }
         velocity = newVelocity;
