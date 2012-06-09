@@ -125,12 +125,14 @@ Rectangle {
             if ( damage < 4 ) {
                 damage = 0;
             }
+            if ( ship.recentlyCrashed == 0) {
+                damage /= 2
+            }
             ship.health -= damage;
             if ( ship.health <= 0 ) {
                ship.health = 0;
                message(ship.playername + " died. Fail!", 5000);
             }
-            ship.healthbar().health = ship.health;
             if ( damage > 0 ) {
                 wallCollisionFeedback([ship.x, ship.y], Math.round(damage), ship.playercolor);
             }

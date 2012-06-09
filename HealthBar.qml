@@ -7,6 +7,9 @@ Grid {
     property int health: -1;
     property color barcolor: "black"
     onHealthChanged: {
+        if( children[1].children[0].width < health ) {
+            increase_health.start();
+        }
         children[1].children[0].width = health;
     }
     onBarcolorChanged: {
@@ -46,5 +49,13 @@ Grid {
         }
         radius: 1
         color: Qt.rgba(0, 0, 0, 0.2)
+    }
+    
+    SequentialAnimation {
+        id: "increase_health"
+        running: false;
+        loops: 1;
+        ColorAnimation { target: children[1].children[0]; property: "color"; to: "white"; duration: 200 }
+        ColorAnimation { target: children[1].children[0]; property: "color"; to: barcolor; duration: 200 }
     }
 }

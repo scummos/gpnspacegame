@@ -60,11 +60,19 @@ Rectangle {
             }
         }
         velocity = newVelocity;
+        var abs_velocity = Math.sqrt(Math.pow(velocity[0],2) + Math.pow(velocity[1],2));
+        // console.log(recentlyCrashed, " ", abs_velocity);
+        if ( recentlyCrashed == 0 && abs_velocity > 0.8) {
+            health += 2.0/arena.timeInterval;
+            if(health > 100) {
+                health = 100;
+            }
+        }
         
         var newPosition = position;
         // update ship position
         for ( var i = 0; i < 2; i++ ) {
-            newPosition[i] += velocity[i]*arena.timeInterval
+            newPosition[i] += velocity[i]*arena.timeInterval;
         }
         position = newPosition;
         if ( recentlyCrashed < 0 ) {
@@ -107,6 +115,10 @@ Rectangle {
         onTriggered: {
             spawnParticle(0.5);
         }
+    }
+    
+    onHealthChanged: {
+        ship.healthbar().health = ship.health;
     }
     
     onPositionChanged: {
