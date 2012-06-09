@@ -10,6 +10,9 @@ Grid {
         if( children[1].children[0].width < health ) {
             increase_health.start();
         }
+        else {
+            decrease_health.start();
+        }
         children[1].children[0].width = health;
     }
     onBarcolorChanged: {
@@ -55,7 +58,14 @@ Grid {
         id: "increase_health"
         running: false;
         loops: 1;
-        ColorAnimation { target: children[1].children[0]; property: "color"; to: "white"; duration: 200 }
+        ColorAnimation { target: children[1].children[0]; property: "color"; to: Qt.lighter(barcolor, 1.2); duration: 50 }
+        ColorAnimation { target: children[1].children[0]; property: "color"; to: barcolor; duration: 200 }
+    }
+    SequentialAnimation {
+        id: "decrease_health"
+        running: false;
+        loops: 1;
+        ColorAnimation { target: children[1].children[0]; property: "color"; to: Qt.darker(barcolor, 1.7); duration: 50 }
         ColorAnimation { target: children[1].children[0]; property: "color"; to: barcolor; duration: 200 }
     }
 }
