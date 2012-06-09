@@ -127,7 +127,7 @@ Rectangle {
             if ( damage < 4 ) {
                 damage = 0;
             }
-            if ( ship.recentlyCrashed == 0) {
+            if ( ship.reducedDamage == 0) {
                 damage /= 2
             }
             ship.health -= damage;
@@ -200,6 +200,8 @@ Rectangle {
                 console.log("COLLISION!");
                 ship.recentlyCrashed = -500/timeInterval; // half a second
                 other.recentlyCrashed = -500/timeInterval;
+                ship.reducedDamage = -900/timeInterval; // almost a second no reduced collision damage
+                other.reducedDamage = -900/timeInterval;
                 ship.velocity =  [v2_n[0] + v1_t[0], v2_n[1] + v1_t[1]];
                 other.velocity = [v1_n[0] + v2_t[0], v1_n[1] + v2_t[1]];
                 // avoid penetration: move players apart

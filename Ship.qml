@@ -30,6 +30,7 @@ Rectangle {
     // ticks since the most recent crash, negative
     // "0" means "long ago"
     property int recentlyCrashed: 0;
+    property int reducedDamage: 0;
     
     function tick() {
         // calculate norm of acceleration
@@ -77,6 +78,9 @@ Rectangle {
         position = newPosition;
         if ( recentlyCrashed < 0 ) {
             recentlyCrashed ++;
+        }
+        if ( reducedDamage < 0 ) {
+            reducedDamage ++;
         }
     }
     
