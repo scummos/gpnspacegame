@@ -67,9 +67,8 @@ Rectangle {
                 color: "white"
                 text: "<center>Hit your enemy to make him crash into walls!</center>\n"+
                       "<center>You can move around and use a Bash to kick the enemy away a bit (every 8 seconds).</right>\n"+
-                      "<center>Player 1 controls: Arrow keys + Ctrl (Bash)</center>\n"+
+                      "<center>Player 1 controls: Arrow keys + AltGr (Bash)</center>\n"+
                       "<center>Player 2 controls: WASD + Shift (Bash)</center>\n"+
-                      
                       "<center>The faster you hit a wall, the more damage you take.</center>\n"+
                       "<center>If you recently collided with an enemy, more damage will be dealt by crashes.</center>\n"+
                       "<center>Flying fast regenerates hitpoints.</center>\n"
@@ -191,7 +190,7 @@ Rectangle {
                 if ( event.key == Qt.Key_Shift ) {
                     players.children[1].tryBoost(players.children[0]);
                 }
-                if ( event.key == Qt.Key_Control ) {
+                if ( event.key == Qt.Key_AltGr ) {
                     players.children[0].tryBoost(players.children[1]);
                 }
             }

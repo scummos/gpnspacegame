@@ -59,8 +59,8 @@ Rectangle {
         }
         console.log("angle:", angle);
         var sprite = comp.createObject(arena, {
-            "x": other.position[0],
-            "y": other.position[1],
+            "x": other.position[0] + other.radius,
+            "y": other.position[1] + other.radius,
             "angle": angle,
             "strength": strength * 100
         });
