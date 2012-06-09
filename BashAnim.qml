@@ -3,12 +3,13 @@ import QtQuick 1.1
 Rectangle {
     property double angle : 0
     property double strength: 45
-    opacity: 0.1
+    opacity: 0.25
+    z: 500
     Repeater {
         model: 20
         Rectangle {
-            x: (strength+8)*Math.random()*0.4 // - strength/0.8 - 4
-            y: (strength+8)*Math.random()*0.4 // - strength/0.8 - 4
+            x: (strength+8)*Math.random()*0.4 - 4
+            y: (strength+8)*Math.random()*0.4 - 4
             id: rect
             color: "white"
             height: 1
@@ -17,7 +18,7 @@ Rectangle {
             ParallelAnimation {
                 running: true
                 NumberAnimation { target: rect; property: "opacity"; to: 0.4; duration: 50 }
-                NumberAnimation { target: rect; property: "width"; to: strength + 15; duration: 50 }
+                NumberAnimation { target: rect; property: "width"; to: strength/1.2 + 15; duration: 50 }
             }
         }
     }

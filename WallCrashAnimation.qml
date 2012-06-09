@@ -32,6 +32,7 @@ Item {
         text: parent.text
         opacity: 1
         font.pointSize: parent.fontSize
+        font.family: "verdana"
         Behavior on opacity {
             NumberAnimation { duration: 2000 }
         }

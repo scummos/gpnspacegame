@@ -22,7 +22,7 @@ Grid {
     
     Text {
         text: parent.text
-        font.family: "Monospace"
+        font.family: "georgia"
         font.pointSize: 8
         color: "#CCCCCC"
     }

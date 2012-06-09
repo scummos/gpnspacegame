@@ -10,10 +10,6 @@ Rectangle {
     
     property variant pressedKeys: {}
     
-    //Sounds {
-    //    id: sounds
-    //}
-    
     states: [
         State {
             name: "NotStartedState"
@@ -65,13 +61,14 @@ Rectangle {
                 y: 20
                 anchors.horizontalCenter: parent.horizontalCenter
                 color: "white"
+                font.family: "georgia"
                 text: "<center>Hit your enemy to make him crash into walls!</center>\n"+
                       "<center>You can move around and use a Bash to kick the enemy away a bit (every 8 seconds).</right>\n"+
                       "<center>Player 1 controls: Arrow keys + AltGr (Bash)</center>\n"+
                       "<center>Player 2 controls: WASD + Shift (Bash)</center>\n"+
                       "<center>The faster you hit a wall, the more damage you take.</center>\n"+
-                      "<center>If you recently collided with an enemy, more damage will be dealt by crashes.</center>\n"+
-                      "<center>Flying fast regenerates hitpoints.</center>\n"
+                      "<center>If you recently collided with an enemy, more damage will be dealt by crashes.</center>\n"
+//                       "<center>Flying fast regenerates hitpoints.</center>\n"
             }
         }
         
@@ -101,6 +98,7 @@ Rectangle {
                 }
                 font.pointSize:11
                 color:"white"
+                font.family: "georgia"
                 text:"Press Spacebar to start a new game, F1 for help"
                 
                 SequentialAnimation {
@@ -208,6 +206,7 @@ Rectangle {
             anchors.verticalCenter: parent.verticalCenter
             anchors.horizontalCenter: parent.horizontalCenter
             opacity:1
+            font.family: "georgia"
             Behavior on opacity {
                 NumberAnimation {
                     duration:300
@@ -274,7 +273,6 @@ Rectangle {
         }
         
         function applyDamageFromWallCollision(ship) {
-            console.log(ship.velocity);
             var damage = ( Math.pow(ship.velocity[0], 2) + Math.pow(ship.velocity[1], 2) ) * 30;
             ouch(ship, damage);
             return damage
@@ -351,7 +349,7 @@ Rectangle {
                             (-ship.velocity[0]*collision_normal[1] + ship.velocity[1]*collision_normal[0])*collision_normal[0]];
                 var v2_t = [-(-other.velocity[0]*collision_normal[1] + other.velocity[1]*collision_normal[0])*collision_normal[1], 
                             (-other.velocity[0]*collision_normal[1] + other.velocity[1]*collision_normal[0])*collision_normal[0]];
-                console.log("COLLISION!");
+                console.log("BANG!");
                 ship.recentlyCrashed = -500/timeInterval; // half a second
                 other.recentlyCrashed = -500/timeInterval;
                 ship.reducedDamage = -900/timeInterval; // almost a second no reduced collision damage

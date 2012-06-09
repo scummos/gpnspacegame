@@ -45,7 +45,6 @@ Rectangle {
         var direction_y = position[1]-other.position[1];
         direction_x /= distance;
         direction_y /= distance;
-        console.log("str:", strength);
         var newVelocity = other.velocity;
         newVelocity[0] -= direction_x * strength;
         newVelocity[1] -= direction_y * strength;
@@ -57,7 +56,6 @@ Rectangle {
         if ( direction_x > 0 && direction_y > 0 || direction_x > 0 && direction_y < 0 ) {
             angle += 180;
         }
-        console.log("angle:", angle);
         var sprite = comp.createObject(arena, {
             "x": other.position[0] + other.radius,
             "y": other.position[1] + other.radius,
@@ -113,12 +111,13 @@ Rectangle {
         velocity = newVelocity;
         var abs_velocity = Math.sqrt(Math.pow(velocity[0],2) + Math.pow(velocity[1],2));
         // console.log(recentlyCrashed, " ", abs_velocity);
-        if ( recentlyCrashed == 0 && abs_velocity > 0.8 && canvas.state == "GameRunningState") {
-            health += 3.0/arena.timeInterval;
-            if(health > 100) {
-                health = 100;
-            }
-        }
+        // Regeneration is disabled for now, it's quite pointless.
+//         if ( recentlyCrashed == 0 && abs_velocity > 0.8 && canvas.state == "GameRunningState") {
+//             health += 3.0/arena.timeInterval;
+//             if(health > 100) {
+//                 health = 100;
+//             }
+//         }
         
         var newPosition = position;
         // update ship position
