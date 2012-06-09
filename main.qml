@@ -187,7 +187,7 @@ Rectangle {
                     canvas.state = "NotStartedState";
                     message("<center>GPNSpaceGame</center>");
                 }
-                if ( event.key == Qt.Key_C ) {
+                if ( event.key == Qt.Key_Shift ) {
                     players.children[1].tryBoost(players.children[0]);
                 }
                 if ( event.key == Qt.Key_Control ) {
