@@ -40,7 +40,7 @@ Rectangle {
         var strength = Math.pow(position[0]-other.position[0], 2)
                       +Math.pow(position[1]-other.position[1], 2);
         var distance = Math.sqrt(strength);
-        strength = Math.max(1 / Math.sqrt(strength) * 50, 0.5);
+        strength = Math.min(1 / Math.sqrt(strength) * 50, 0.5);
         var direction_x = position[0]-other.position[0];
         var direction_y = position[1]-other.position[1];
         direction_x /= distance;

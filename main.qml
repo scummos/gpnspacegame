@@ -40,7 +40,7 @@ Rectangle {
                 y: 20
                 anchors.horizontalCenter: parent.horizontalCenter
                 color: "white"
-                text: "<center>You can move around and use a Bash to kick the enemy away a bit (every 8 seconds).</center>\n"+
+                text: "<center>You can move around and use a Bash to kick the enemy away a bit (every 8 seconds).</right>\n"+
                       "<center>Player 1 controls: Arrow keys + Ctrl (Bash)</center>\n"+
                       "<center>Player 2 controls: WASD + C (Bash)</center>\n"+
                       "<center>Hit your enemy to make him crash into walls!</center>\n"+
@@ -141,6 +141,8 @@ Rectangle {
                 players.children[i].health = 100;
                 players.children[i].velocity = [0, 0]
                 players.children[i].acceleration = [0, 0]
+                players.children[i].healthbar().resetBash();
+                players.children[i].boostCooldown = 0;
             }
             players.children[0].position = [50, 50]
             players.children[1].position = [450, 450]

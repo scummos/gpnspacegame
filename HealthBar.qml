@@ -58,6 +58,11 @@ Grid {
         bashAnimation.restart();
     }
     
+    function resetBash() {
+        bashAnimation.stop();
+        bashtext.color = "yellow";
+    }
+    
     Text {
         id: bashtext
         color: "yellow"
