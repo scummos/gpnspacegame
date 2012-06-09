@@ -6,6 +6,19 @@ Rectangle {
     width: 600
     height: 600
     color: "#333333"
+    state: "NotStartedState"
+    
+    states: [
+        State {
+            name: "NotStartedState"
+            PropertyChanges { target: startGameBanner; visible: true}
+        },
+        State {
+            name: "GameRunningState"
+            PropertyChanges { target: messagebox; visible: false }
+            PropertyChanges { target: startGameBanner; visible: false }
+        }
+    ]
     
     Rectangle {
         id: arena
@@ -16,6 +29,32 @@ Rectangle {
         color: "#000000"
         
         property int timeInterval: 16
+        
+        Rectangle {
+            id: startGameBanner;
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.horizontalCenter: parent.horizontalCenter
+            Text {
+                anchors.horizontalCenter: parent.horizontalCenter
+                y: 80
+                opacity:1
+                Behavior on opacity {
+                    NumberAnimation {
+                        duration:300
+                    }
+                }
+                font.pointSize:11
+                color:"white"
+                text:"Press Spacebar to start a new game"
+                
+                SequentialAnimation {
+                    loops: Animation.Infinite
+                    running: true
+                    NumberAnimation { target: startGameBanner; property: "opacity"; to: 0.3; duration: 600 }
+                    NumberAnimation { target: startGameBanner; property: "opacity"; to: 1.0; duration: 600 }
+                }
+            }
+        }
         
         Item {
             id: players
@@ -64,12 +103,31 @@ Rectangle {
             }
         }
         
+        function newGame() {
+            console.log("new game started");
+            canvas.state = "GameRunningState"
+            for ( var i = 0; i < 2; i++ ) {
+                players.children[i].health = 100;
+                players.children[i].velocity = [0, 0]
+                players.children[i].acceleration = [0, 0]
+            }
+            players.children[0].position = [50, 50]
+            players.children[1].position = [450, 450]
+        }
+        
         Keys.onPressed: {
             event.accepted = true;
+            if ( event.key == Qt.Key_Space && canvas.state == "NotStartedState" ) {
+                newGame();
+            }
+            if ( event.key == Qt.Key_Escape && canvas.state == "GameRunningState" ) {
+                canvas.state = "NotStartedState";
+            }
             doHandleKey(event, "pressed")
         }
         
         Keys.onReleased: {
+            event.accepted = true;
             doHandleKey(event, "released")
         }
         
@@ -77,7 +135,7 @@ Rectangle {
             id: messagebox
             anchors.verticalCenter: parent.verticalCenter
             anchors.horizontalCenter: parent.horizontalCenter
-            opacity:0
+            opacity:1
             Behavior on opacity {
                 NumberAnimation {
                     duration:300
@@ -85,7 +143,7 @@ Rectangle {
             }
             font.pointSize:35
             color:"white"
-            text:"<undefined>"
+            text:"<center>GPNSpaceGame</center>"
         }
         
         function message(text, timeout) {
@@ -130,9 +188,12 @@ Rectangle {
             if ( ship.reducedDamage == 0) {
                 damage /= 2
             }
-            ship.health -= damage;
+            if ( canvas.state == "GameRunningState" ) {
+                ship.health -= damage;
+            }
             if ( ship.health <= 0 ) {
                ship.health = 0;
+               canvas.state = "NotStartedState"
                message("<center>Game Over</center>\n<center>" + ship.playername + " died first.</center>", 5000);
             }
             if ( damage > 0 ) {

@@ -62,8 +62,9 @@ Rectangle {
         }
         velocity = newVelocity;
         var abs_velocity = Math.sqrt(Math.pow(velocity[0],2) + Math.pow(velocity[1],2));
-        if ( reducedDamage == 0 && abs_velocity > 0.68) {
-            health += 3/arena.timeInterval;
+        // console.log(recentlyCrashed, " ", abs_velocity);
+        if ( recentlyCrashed == 0 && abs_velocity > 0.8 && canvas.state == "GameRunningState") {
+            health += 3.0/arena.timeInterval;
             if(health > 100) {
                 health = 100;
             }
